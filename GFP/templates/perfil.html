@@ -43,11 +43,7 @@
             <div class="img_box">
                 <h2>Perfil de: {{ usuario.username }}</h2>
                 {# Verifica se o user possui imagem de perfil #}
-                {% if usuario.userprofile.profile_pics %}
-                    <img class="imgredondo" src="{{ usuario.userprofile.profile_pics.url }}" alt="Foto de perfil">
-                {% else %}
                     <img class="imgredondo" src="/media/profile_pics/default.jpg" alt="Imagem específica">     
-                {% endif %}
             </div>
 
             {# formulario de envio da imagem de perfil #}
