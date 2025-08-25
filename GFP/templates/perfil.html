@@ -1,0 +1,151 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Perfil</title>
+    <!-- CSS do swiper -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css"/>
+   
+    <!-- Script do popper -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+   
+    <!-- Link para o arquivo CSS -->
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+    
+    <!-- Cabeçalho da página com logo e botões de navegação -->
+    <div class="cabecalho">
+        <div id="logo_box">
+            <a href="{% url 'index' %}">
+                <img id="logo" src="{% static 'img/logo.png' %}" alt="">
+            </a>
+        </div>
+        <div id="cabecalho_button">
+            <a class="cabecalho_link" href="{% url 'extrair_dados' %}">Testar</a>
+            <a class="cabecalho_link" href="{% url 'como_funciona' %}">Como Funciona ?</a>
+            {# Verifica se o usuário está logado para exibir o botão de logout #}
+            {% if user.is_authenticated %}
+                <form id="form_perfil" method="POST" action="{% url 'login_view' %}">
+                    {% csrf_token %}
+                    <button id="btn_logout" type="submit">Logout</button>
+                </form>
+            {% else %}
+                <a class="cabecalho_link" href="{% url 'login_view' %}">Login</a>
+                <a class="cabecalho_link" href="{% url 'register_view' %}">Register</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Perfil do usuario logado -->
+    <div class="perfil_box">
+        <div class="perfil">
+            <div class="img_box">
+                <h2>Perfil de: {{ usuario.username }}</h2>
+                {# Verifica se o user possui imagem de perfil #}
+                {% if usuario.userprofile.profile_pics %}
+                    <img class="imgredondo" src="{{ usuario.userprofile.profile_pics.url }}" alt="Foto de perfil">
+                {% else %}
+                    <img class="imgredondo" src="/media/profile_pics/default.jpg" alt="Imagem específica">     
+                {% endif %}
+            </div>
+
+            {# formulario de envio da imagem de perfil #}
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div style="display: none;">
+                    {{ form.profile_pics }}
+                </div>
+                
+                <div class="perfil_btn_box">
+                    <button id="perfil_btn" class="btn" type="button">Escolher</button>
+
+                    <button id="perfil_btn" class="btn">Atualizar</button>
+                </div>
+            </form>
+
+            <!-- informações do usuario logado -->
+            <div  class="perfil_text">
+                <p>Nome: {{ usuario.username }}</p>
+                <p>Email: {{ usuario.email }}</p>
+                <p>Entrou em: {{ usuario.date_joined|date:"d/m/Y H:i" }}</p>
+            </div>
+
+        </div>
+    </div>
+
+        <!-- Historico de boletos ja envidados -->
+        <div class="boleto-box">
+            <div class="swiper Swiper_perfil">
+                <div class="swiper-wrapper">
+                    
+                    <div class="swiper-slide">
+                        <div id="boleto-{{ img.id }}" class="boleto-item">
+                            <p><strong>Tipo:</strong> <span class="tipo">CPFL</span></p>
+                            <p><strong>Data:</strong> <span class="data">01/06</span></p>
+                            <p><strong>Valor:</strong> R$ <span class="valor">25,00</span></p>
+
+                            <button class="btn btn-secondary">Editar</button>
+                        </div>
+                    </div>
+
+                    <div class="swiper-slide">
+                        <div id="boleto-{{ img.id }}" class="boleto-item">
+                            <p><strong>Tipo:</strong> <span class="tipo">VIVO</span></p>
+                            <p><strong>Data:</strong> <span class="data">01/07</span></p>
+                            <p><strong>Valor:</strong> R$ <span class="valor">16,00</span></p>
+
+                            <button class="btn btn-secondary">Editar</button>
+                        </div>
+                    </div>
+
+
+                    <div class="swiper-slide">
+                        <div id="boleto-{{ img.id }}" class="boleto-item">
+                            <p><strong>Tipo:</strong> <span class="tipo">Energisa</span></p>
+                            <p><strong>Data:</strong> <span class="data">01/08</span></p>
+                            <p><strong>Valor:</strong> R$ <span class="valor">27,00</span></p>
+
+                            <button class="btn btn-secondary">Editar</button>
+                        </div>
+                    </div>
+
+
+                    <div class="swiper-slide">
+                        <div id="boleto-{{ img.id }}" class="boleto-item">
+                            <p><strong>Tipo:</strong> <span class="tipo">Naturgy</span></p>
+                            <p><strong>Data:</strong> <span class="data">01/09</span></p>
+                            <p><strong>Valor:</strong> R$ <span class="valor">9,00</span></p>
+
+                            <button class="btn btn-secondary">Editar</button>
+                        </div>
+                    </div>                    
+                    
+                </div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+        </div>
+    
+    <!--Rodapé com contato e GitHub-->
+    <footer class="rodape">
+        <p>Confira meu GitHub: <a href="https://github.com/Otavio72">Otavio72</a></p>
+        <p>© 2025 Otávio Ribeiro. Todos os direitos reservados.</p>
+    </footer> 
+
+    <!-- Script para apagarBoleto -->
+    <script>
+        function apagarBoleto(){
+            document.getElementById('action_type').value = 'delete';
+            document.getElementById("form-{{ img.id }}").submit();
+        }
+    </script>
+    
+    <!-- Script para swiper -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+    
+    <!-- Script para js personalizado -->
+    <script src="{% static 'js/perfil.js' %}"></script>
+</body>
+</html>
