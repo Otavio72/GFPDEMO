@@ -34,7 +34,7 @@ SECRET_KEY = 'django-insecure-1!h#otl10*7=-3i0t#nv#cahd19t^ek6&59uz=zz413j=mif^i
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['GFP.onrender.com']
+ALLOWED_HOSTS = ['https://gfp-wr47.onrender.com']
 
 
 # Application definition
